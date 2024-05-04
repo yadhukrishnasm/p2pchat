@@ -8,6 +8,7 @@ var datachannel;
 var clientName = "user" + Math.floor(Math.random() * 1000 + 1);
 var remoteclient;
 import turnConfig from "./config.js";
+import Gemini from './geminiInt.js';
 
 document.getElementById("yourname").innerHTML = "You: " + clientName;
 
@@ -264,7 +265,7 @@ var messageinput = document.getElementById("messagearea");
 if (messageinput) {
  
   messageinput.addEventListener("input", (event) => {
-    console.log(event.target.value);
+    // console.log(event.target.value);
     messagetexted = event.target.value;
   });
 }
@@ -276,6 +277,9 @@ if (sendmessagebutton) {
     var themessage = "<p>" + clientName + ":" + messagetexted + "</p>";
     viewmsgtoelement(document.getElementById("messagesent"), themessage);
     datachannel.send(themessage);
+    Gemini(messagetexted).then((data) => {
+      document.getElementById("aiSupp").innerHTML = data;
+    });
     messageinput.value = "";
     messagetexted = "";
   });

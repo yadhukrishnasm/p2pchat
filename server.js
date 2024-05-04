@@ -5,7 +5,16 @@ var http = require("http");
 //For signalling in WebRTC
 var socketIO = require("socket.io");
 
+
 app.use(express.static("public"));
+
+app.use(express.static('public', {
+  setHeaders: (res, path, stat) => {
+    if (path.endsWith('.css')) {
+      res.setHeader('Content-Type', 'text/css');
+    }
+  }
+}));
 
 app.get("/", function (req, res) {
   res.render("index.ejs");
