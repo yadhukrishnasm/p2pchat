@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Register</title>
 
     <script>
-        async function loginCode() {
+        async function regCode() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
             try {
-                const response = await fetch('/login', {
+                const response = await fetch('/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -20,10 +20,11 @@
                 });
 
                 if (response.ok) {
-                    console.log('Login successful');
-                    window.location.href = '/chat';
+                    console.log('Registration successful');
+                    window.location.href = '/';
                 } else {
-                    alert('Login failed. Please check your credentials.');
+                    const errorMessage = await response.text(); // Extract error message from response
+                    alert(`Registration failed: ${errorMessage}`);
                 }
             } catch (error) {
                 console.error('Error:', error);
@@ -36,6 +37,6 @@
 <body>
     <input type="text" name="username" id="username" placeholder="Username">
     <input type="password" name="password" id="password" placeholder="Password">
-    <button type="submit" id="login" onclick="loginCode()">Login</button>
+    <button type="submit" id="register" onclick="regCode()">Register</button>
 </body>
 </html>

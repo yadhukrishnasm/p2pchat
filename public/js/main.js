@@ -5,12 +5,10 @@ var isStarted = false;
 var pc;
 var turnReady;
 var datachannel;
-var clientName = "user" + Math.floor(Math.random() * 1000 + 1);
 var remoteclient;
 import turnConfig from "./config.js";
 import Gemini from './geminiInt.js';
 
-document.getElementById("yourname").innerHTML = "You: " + clientName;
 
 //Initialize turn/stun server here
 //turnconfig will be defined in public/js/config.js

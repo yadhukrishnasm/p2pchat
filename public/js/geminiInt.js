@@ -23,7 +23,9 @@ async function analyzeMessage(message) {
   
       const data = await response.json();
       console.log(data)
-      return data;
+      const textParts = data.candidates[0].content.parts.map(part => part.text);
+      const textContent = textParts.join('\n');
+      return textContent;
     } catch (error) {
       console.error('Error analyzing message:', error);
       throw error;

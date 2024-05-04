@@ -1,37 +1,117 @@
-var os = require("os");
-var express = require("express");
-var app = express();
-var http = require("http");
-//For signalling in WebRTC
-var socketIO = require("socket.io");
+const express = require("express");
+const app = express();
+const http = require("http");
+const socketIO = require("socket.io");
+const os = require("os");
+const bcrypt = require('bcrypt');
+const mongoose = require('mongoose');
+const session = require('express-session');
 
+
+// MongoDB connection
+mongoose.connect('mongodb://localhost:27017/userAuth');
+
+// User schema
+const userSchema = new mongoose.Schema({
+  password: { type: String, required: true },
+  username:{type:String, required:true, unique:true}
+});
+
+userSchema.pre('save', async function(next) {
+  const user = this;
+  if (!user.isModified('password')) return next();
+
+  const salt = await bcrypt.genSalt(10);
+  user.password = await bcrypt.hash(user.password, salt);
+  next();
+});
+
+// User model
+const User = mongoose.model('User', userSchema);
 
 app.use(express.static("public"));
-
 app.use(express.static('public', {
-  setHeaders: (res, path, stat) => {
+  setHeaders: (res, path,) => {
     if (path.endsWith('.css')) {
       res.setHeader('Content-Type', 'text/css');
     }
   }
 }));
 
-app.get("/", function (req, res) {
-  res.render("index.ejs");
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }
+}));
+
+app.use(express.json());
+
+// Register a new user
+app.get('/reg',(req,res)=>{
+  res.render("reg.ejs")
+})
+
+app.post('/register', async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    const user = new User({ username, password });
+    await user.save();
+    req.session.username = username;
+    res.status(201).send('User registered successfully');
+  } catch (error) {
+    if (error.code === 11000) {
+      return res.status(400).send('Username already exists');
+    }
+    res.status(400).send('Registration failed');
+  }
 });
 
-var server = http.createServer(app);
 
-server.listen(process.env.PORT || 3000, ()=>{
-  console.log( `server is listening at on port 3000`)
+
+app.get('/',(req,res)=>{
+  res.render("login.ejs")
+})
+// Login a user
+app.post('/login', async (req, res) => {
+  console.log(req.body);
+  const { password,username } = req.body;
+
+  try {
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+
+    const isValid = await bcrypt.compare(password, user.password);
+    if (!isValid) {
+      return res.status(401).send('Invalid password');
+    }
+    req.session.username = username;
+    res.send('Login successful');
+    } catch (error) {
+    res.status(500).send('Login failed');
+  }
 });
 
-var io = socketIO(server);
+app.get("/chat", function (req, res) {
+  if (!req.session.username) {
+    return res.status(401).send('You must be logged in to access the chat');
+  }
+
+  res.render("index.ejs", { username: req.session.username });
+});
+
+const server = http.createServer(app);
+
+server.listen(process.env.PORT || 3000, () => {
+  console.log('Server is listening on port 3000');
+});
+
+const io = socketIO(server);
 
 io.sockets.on("connection", function (socket) {
-  // Convenience function to log server messages on the client.
-  // Arguments is an array like object which contains all the arguments of log().
-  // To push all the arguments of log() in array, we have to use apply().
   function log() {
     var array = ["Message from server:"];
     array.push.apply(array, arguments);
