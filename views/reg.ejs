@@ -5,6 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
 
+    <style>
+         body{
+            background-color: black;
+            color: white;
+            font-family: monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 80vh;
+            font-size: larger;
+            gap: 15px;
+        }
+        input{
+            background-color: black;
+            color: white;
+            font-size: larger;
+            outline: none;
+            border: 1px solid white;
+            padding: 10px;
+        }
+        button{
+            background-color: black;
+            color: white;
+            font-size: large;
+            border: 1px solid white;
+            padding: 10px;
+        }
+        button:hover{
+            background-color: white;
+            color: black;
+        }
+  
+    </style>
+
     <script>
         async function regCode() {
             const username = document.getElementById('username').value;
@@ -35,6 +70,7 @@
 
 </head>
 <body>
+    <h3>register</h3>
     <input type="text" name="username" id="username" placeholder="Username">
     <input type="password" name="password" id="password" placeholder="Password">
     <button type="submit" id="register" onclick="regCode()">Register</button>

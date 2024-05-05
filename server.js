@@ -9,12 +9,12 @@ const session = require('express-session');
 
 
 // MongoDB connection
-mongoose.connect('mongodb://localhost:27017/userAuth');
+mongoose.connect('mongodb://localhost:27017/p2pchat');
 
 // User schema
 const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
-  username:{type:String, required:true, unique:true}
+  username:{ type: String, required: true, unique: true }
 });
 
 userSchema.pre('save', async function(next) {
@@ -56,9 +56,11 @@ app.post('/register', async (req, res) => {
   const { username, password } = req.body;
 
   try {
+    
     const user = new User({ username, password });
     await user.save();
-    req.session.username = username;
+    console.log(user);
+
     res.status(201).send('User registered successfully');
   } catch (error) {
     if (error.code === 11000) {

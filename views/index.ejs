@@ -5,17 +5,93 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <style>
+       body{
+            background-color: black;
+            color: white;
+            font-family: monospace;
+            font-size: larger;
+        }
+        input{
+            background-color: black;
+            color: white;
+            font-size: larger;
+            outline: none;
+            border: 1px solid white;
+            padding: 10px;
+        }
+        button{
+            background-color: black;
+            color: white;
+            font-size: large;
+            border: 1px solid white;
+            padding: 10px;
+        }
+        button:hover{
+            background-color: white;
+            color: black;
+        }
+        #connectbutton{
+          position: absolute;
+          right: 20px;
+          top: 20px;
+        }
+        #messagearea{
+          width: 70%;
+          margin-left: 20px;
+        }
+        #name{
+          font-size: larger;
+        }
+        #chat{  
+          position:relative;
+          width: 60%;
+          float: left;
+          display: flex;
+          height: 80vh;
+          border-right: 1px rgba(255, 255, 255, 0.5) solid;
+          flex-direction: column;
+          justify-content: flex-end;
+          align-items: flex-start;
+        }
+        #span{
+          justify-content: baseline;
+          width: 60%;
+          position: fixed;
+        }
+        #aiSupp{
+          border-top: 1px solid white;
+          float: right;
+          position: absolute;
+          width: 30%;
+          top: 6.5rem;
+          right: 2em;
+        }
+        #box{
+          height: 90%;
+          margin-bottom: 55px;
+          margin-left: 22px;
+          overflow-y: scroll;
+          width: 100%;
+        }
+    </style>
   </head>
   <body>
 
-    <pre>hi <%= username %> </pre>
-    <p id="remotename"></p>
+    <p id="name"><%= username %> </p>
+    <p>Chatting with <b id="remotename"> </b></p>
 
     <button id="connectbutton">Connect with others</button>
-    <textarea id="messagearea" name="message" rows="5" cols="50"></textarea>
-    <button id="sendmessage">Send message</button>
+    <div id="chat">
+      <div id="box">
+        <div id="messagesent"></div>
+      </div>
+      <span id="span" >
+        <input id="messagearea" name="message"></input>
+        <button id="sendmessage">Send</button>
+      </span>
+    </div>
 
-    <div id="messagesent"></div>
     <div id="aiSupp"></div>
 
     <!-- Import SocketIO for signalling -->
@@ -23,6 +99,12 @@
 
     <!-- Import WebRTC adapter for compatibility with all the browsers  -->
     <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+
+
+    <script>
+      // Set the username as a global variable
+      const username = '<%= username %>';
+    </script>
 
     <script type="module" src="js/main.js"></script>
     <script type="module" src="js/config.js"></script>

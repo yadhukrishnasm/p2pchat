@@ -5,6 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
 
+    <style>
+        body{
+            background-color: black;
+            color: white;
+            font-family: monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            font-size: larger;
+        }
+        input{
+            background-color: black;
+            color: white;
+            font-size: larger;
+            outline: none;
+            border: 1px solid white;
+            padding: 10px;
+        }
+        button{
+            background-color: black;
+            color: white;
+            font-size: large;
+            border: 1px solid white;
+            padding: 10px;
+        }
+        button:hover{
+            background-color: white;
+            color: black;
+        }
+        #regbtn{
+            margin: 30px;
+            font-size: large;
+        }
+    </style>
+
     <script>
         async function loginCode() {
             const username = document.getElementById('username').value;
@@ -33,9 +70,15 @@
     </script>
 
 </head>
-<body>
+<body>  
+    
+    <h3>Login</h3>
     <input type="text" name="username" id="username" placeholder="Username">
+    <br>
     <input type="password" name="password" id="password" placeholder="Password">
+    <br>
     <button type="submit" id="login" onclick="loginCode()">Login</button>
+
+    <a href="/reg" id="regbtn">register</a>
 </body>
 </html>

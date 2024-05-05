@@ -5,9 +5,10 @@ var isStarted = false;
 var pc;
 var turnReady;
 var datachannel;
+var clientName = username;
 var remoteclient;
 import turnConfig from "./config.js";
-import Gemini from './geminiInt.js';
+import nlp from './nlp.js';
 
 
 //Initialize turn/stun server here
@@ -275,7 +276,7 @@ if (sendmessagebutton) {
     var themessage = "<p>" + clientName + ":" + messagetexted + "</p>";
     viewmsgtoelement(document.getElementById("messagesent"), themessage);
     datachannel.send(themessage);
-    Gemini(messagetexted).then((data) => {
+    nlp(messagetexted).then((data) => {
       document.getElementById("aiSupp").innerHTML = data;
     });
     messageinput.value = "";
