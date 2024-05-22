@@ -10,10 +10,8 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 
 
 // MongoDB connection
-mongoose.connect('mongodb+srv://admin:root@yadhukrishnasm.hklj5a3.mongodb.net/', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-}).then(() => {
+mongoose.connect('mongodb+srv://admin:root@yadhukrishnasm.hklj5a3.mongodb.net/p2p')
+.then(() => {
   console.log("Connected to MongoDB");
 }).catch((err) => {
   console.error("Failed to connect to MongoDB", err);
