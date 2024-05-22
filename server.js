@@ -9,7 +9,7 @@ const session = require('express-session');
 
 
 // MongoDB connection
-mongoose.connect('mongodb://localhost:27017/p2pchat');
+mongoose.connect('mongodb+srv://admin:root@yadhukrishnasm.hklj5a3.mongodb.net/');
 
 // User schema
 const userSchema = new mongoose.Schema({
